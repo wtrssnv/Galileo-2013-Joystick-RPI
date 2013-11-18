@@ -1,5 +1,4 @@
-# core.py: The Core class, contains the main loop and calls relevant methods in active mode when the time is right
-# Author: Niklas Hedlund
+# core.py: La clase core, contiene el bucle principal y los métodos relevantes.
 
 from pygame import *
 import sys, math
@@ -18,7 +17,7 @@ class Core(object):
         self.drawFPS = drawFPS
         self.numFrames = 0
         
-    #Set mode as active and pass the old one to a variable
+    #Establecer el modo activo
     def setActiveMode(self, newMode, discard=False):
         if self.activeMode != None:
             self.activeMode.onSwitchOut(self)
@@ -29,7 +28,7 @@ class Core(object):
         newMode.onSwitchIn(self)
         self.activeMode = newMode
 
-    #Restore the last mode
+    #Reestablece el modo
     def revertLastMode(self):
         if self.lastMode == None:
             return None
@@ -43,7 +42,7 @@ class Core(object):
         return tmp
 
     def doInit(self):
-        #Initialize PyGame
+        #Inicializa pygame
         init()
 
         if self.useFullscreen:
@@ -53,7 +52,7 @@ class Core(object):
 
         self.fpsFont = font.Font(None, 20)
 
-    #Tells the active mode to prepare for exit and then halts the game loop
+    #Prepara al modo activo para su salida del programa
     def pleaseExit(self):
         if self.activeMode.onQuit():
             self.runLoop = False
@@ -68,9 +67,9 @@ class Core(object):
         lastDraw = 0
         while self.runLoop:
             if time.get_ticks() - lastDraw > (1000.0 / self.activeMode.fps):
-                #Time to draw
+                #Momento para pintar
 
-                #Calculate the current fps
+                #Calcula los frames por segundo
                 fps = math.floor(1 / (float(time.get_ticks() - lastDraw) / 1000.0))
 
                 lastDraw = time.get_ticks()
@@ -84,7 +83,7 @@ class Core(object):
 
                 display.update()
             else:
-                #Not time for draw yet, lets do other stuff while we wait
+                #No se puede pintar todavía, deja hacer otras tareas
                 for e in event.get():
                     if e.type == QUIT:
                         if self.activeMode.onQuit():
@@ -96,5 +95,5 @@ class Core(object):
                 self.activeMode.onComputations(self, time.get_ticks())
             
 
-        #Pygame quit
+        #Paramos
         quit()

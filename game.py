@@ -107,6 +107,5 @@ class Game(Mode):
 
         self.speed[1] += GRAVITY
 
-        #Print stats
         screen.blit(self.fonten.render("Velocidad: %f" % self.speed[1], True, (0,0,0)), (10,10,40,100))
         screen.blit(self.fonten.render("Propergoles: %f" % self.fuel, True, (0,0,0)), (10,30,40,100))
